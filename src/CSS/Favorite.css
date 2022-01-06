@@ -1,0 +1,39 @@
+.favorite{color:#fff}
+.title{padding:40px;}
+
+.container-fav{display: flex;justify-content: center; flex-wrap: wrap;    padding-bottom: 30px;}
+.wrapper-cards{min-width: 350px; min-height: 250px; position: relative; margin-bottom:45px;}
+label{perspective:1000px; transform-style: preserve-3d; display: block; width: 300px; height: 230px; position: absolute;}
+.card-fav{position: relative; height: 100%; width: 100%; transform-style:preserve-3d; transition: all .6s; z-index: 20; cursor: pointer;background-color:transparent; border:1px solid #fff; border-radius: 6px;}
+.card-fav div{position: absolute; height: 100%; width: 100%; text-align: center; backface-visibility: hidden; border-radius: 2px;}
+.card-fav .front{padding-top:30%;}
+.card-fav .front .fa-times{position: absolute;right: 15px;top: 10px; font-size: 20px;}
+.card-fav .back .fa-times{position: absolute;right: 15px;top: 10px; font-size: 20px;}
+.card-fav .back{background-color: #0cbaba;
+background-image: linear-gradient(315deg, #0cbaba 0%, #380036 74%);
+; color:#fff; transform: rotateX(180deg); padding-top:20%;}
+.back .fa-moon{font-size: 30px; padding-bottom: 20px;}
+.full-forecast-btn{position: absolute; bottom:-15px; outline:none; border:none; background: none; color:#fff; padding-right: 20px;}
+.full-forecast-btn:after
+.full-forecast-btn .arrow-btn{padding-left: 30px;}
+
+.arrow-btn, .arrow-btn:before{  position: absolute; right: 0%;}
+  .arrow-btn{width: 15px; height: 15px; top: 100%; right:0%; margin: -20px 0 0 -20px; -webkit-transform: rotate(45deg); border-left: none; border-top: 2px #fff solid; border-right: 2px #fff solid; border-bottom: none}
+  .arrow-btn:before{content: '';
+  width: 12px; height: 12px; margin: 1px 0 0 1px; border-left: none; border-top: 1px #fff solid; border-right: 1px #fff solid; border-bottom: none; animation-duration: 2s; animation-iteration-count: infinite;animation-name: arrow;}
+  @keyframes arrow{
+  0% {opacity: 1}
+  100% { opacity: 0 ;transform: translate(15px, -15px)}}
+
+.front span{display: none; padding-bottom:10px}
+label:hover span{display: block;}
+.remove-btn{position: absolute; bottom: 0; right: 0; left: 0; margin: 0 auto; width: 100%; background:none; border: none; border-top:1px solid #fff; padding:10px; color:#fff}
+
+label:hover .card-fav{transform: rotateX(0deg); box-shadow: 0 20px 20px rgba(50,50,50,.2);}
+.fav-input{display: none;} 
+input:checked + .card-fav{transform: rotateX(180deg);}
+label:hover input:checked + .card-fav{transform: rotateX(160deg); box-shadow: 0 20px 20px rgba(50,50,50,.2);}
+
+@media(max-width:600px){
+  .wrapper-cards{min-width: 310px;}
+}
