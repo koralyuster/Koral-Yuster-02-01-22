@@ -6,6 +6,7 @@ export const fetchSearchData = (input) => {
   return async (dispatch) => {
     const fetch = async () => {
       try {
+        // debugger
         const url = (`https://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${config.APIKEY}&q=${input}`)
         const response = axios.get(url);
 
@@ -17,7 +18,7 @@ export const fetchSearchData = (input) => {
     }
     try {
       const searchDate = await fetch();
-      (dispatch(searchActions.searchWeather({ key: searchDate.data[0].Key, cityName: searchDate.data[0].LocalizedName })))
+      (dispatch(searchActions.searchWeather({ optionsSearch: searchDate.data, key: searchDate.data[0].Key })))
     } catch (error) {
       dispatch(searchActions.errorNotification({ searchDate: null }))
     }

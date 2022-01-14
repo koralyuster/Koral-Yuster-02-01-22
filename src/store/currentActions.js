@@ -6,6 +6,7 @@ export const fetchCurrentData = (searchKey) => {
   return async (dispatch) => {
     const fetchCurrent = async () => {
       try {
+        // debugger
         const response = await axios.get(`https://dataservice.accuweather.com/currentconditions/v1/${searchKey}?apikey=${config.APIKEY}`);
 
         return response;
@@ -15,8 +16,9 @@ export const fetchCurrentData = (searchKey) => {
     }
     try {
       const currentData = await fetchCurrent();
-      dispatch(currentActions.currentWeather({ details: currentData.data[0] }))
+      dispatch(currentActions.currentWeather({ details: currentData.data }))
     } catch (error) {
+      //Handling error if API requests are over.
       throw error;
     }
   }
@@ -37,6 +39,7 @@ export const fetchFiveData = (searchKey) => {
       const fiveData = await fetchFive();
       dispatch(currentActions.fiveDaysWeather({ five: fiveData.data.DailyForecasts }))
     } catch (error) {
+      //Handling error if API requests are over.
       throw error;
     }
   }
