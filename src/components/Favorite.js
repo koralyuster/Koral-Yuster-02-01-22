@@ -49,7 +49,7 @@ export default function Favorite() {
             </label>
             <button className="full-forecast-btn" onClick={() => {
               navigate("/")
-              dispatch(searchActions.setChosenFavorite(item.city))
+              dispatch(searchActions.setChosenFavorite({ label: item.city, value: item.key }))
             }}>Skip Full forecast <i className="arrow-btn"></i></button>
           </div>
         ))}

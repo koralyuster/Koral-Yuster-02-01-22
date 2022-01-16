@@ -1,17 +1,52 @@
-.main{padding:50px; color:#fff} 
-.main a{color:#fff; text-decoration: none;}
-.input_icons{position: relative; width:100%; display: flex; margin-top:40px}
-.fa-search{position: absolute; left:20px; top:15px}
-form{width:100%;}
-input{background:none; border:none; border-radius: 6px; padding:10px 10px 10px 45px; width:100%; color:#fff; outline:none; background: #5442d0}
-input::placeholder{color:#fff;}
-.search{background: rgb(0,178,247);
-background: radial-gradient(circle, rgba(0,178,247,1) 0%, rgba(0,134,224,1) 100%); padding:10px 20px; color:#fff; border-radius: 6px; border:none; outline: none; position: absolute; right: 0px;border-bottom-left-radius: 0px; border-top-left-radius: 0px;}
-.current{padding-top:30px; margin:0 auto; text-align: center;}
-.wrap_today{display: flex; justify-content: center;align-items: baseline;}
-small{cursor: pointer;}
-.fa-heart{cursor: pointer; font-size: 25px; text-align: center;}
-
+.main{
+  padding:50px; 
+  color:#fff;
+} 
+.wrapper_input{
+  position: relative; 
+  margin-top:40px;
+}
+.fa-search{
+  position: absolute; 
+  left:15px; 
+  top:11px;
+  z-index: 2;
+}
+.react-select-container{
+    width: 100%;
+    background:none;
+}
+.search{
+  background: rgb(0,178,247);
+  background: radial-gradient(circle, rgba(0,178,247,1) 0%, rgba(0,134,224,1) 100%); 
+  padding:10px 20px; 
+  color:#fff; 
+  border-radius: 6px; 
+  border:none; 
+  outline: none; 
+  position: absolute; 
+  right: 0px;
+  border-bottom-left-radius: 0px; 
+  border-top-left-radius: 0px;
+}
+.current{
+  padding-top:30px; 
+  margin:0 auto; 
+  text-align: center;
+}
+.current p {
+  padding:10px;
+}
+.wrap_today{
+  display: flex; 
+  justify-content: center;
+  align-items: baseline;
+}
+.fa-heart{
+  cursor: pointer; 
+  font-size: 25px; 
+  text-align: center;
+}
 @media(max-width:600px){
   .input_icons{width:100%}
 }

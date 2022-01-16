@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import debounce from 'lodash.debounce';
 import { fetchSearchData } from '../store/searchActions';
 import { fetchCurrentData } from '../store/currentActions';
 import { fetchFiveData } from '../store/currentActions';
@@ -15,11 +14,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Row, Col, Container, CardGroup } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../CSS/Main.css';
-import { searchActions } from '../store/searchSlice';
 
 export default function Main() {
-
-  const isFirstRender = useRef(true);
   const dispatch = useDispatch();
 
   const search = useSelector(state => state.search)
@@ -27,49 +23,27 @@ export default function Main() {
   const current = useSelector(state => state.current.details)
   const five = useSelector(state => state.current.five)
   const favorite = useSelector(state => state.favorite)
-  const [city, setCity] = useState(selectedFavorite || config.DEFAULT_CITY);
+
   const [colorBtn, setColorBtn] = useState('white');
-  const [selectedOption, setSelectedOption] = useState({ label: config.DEFAULT_CITY, value: config.DEFAULT_KEY });
-  // debugger
+  const [selectedOption, setSelectedOption] = useState(selectedFavorite || { label: config.DEFAULT_CITY, value: config.DEFAULT_KEY });
+
   const updateSelector = (value) => setSelectedOption(value)
-  const debouncedOnChange = debounce(updateSelector, 1000)
 
   const loadOptions = (selectedOption, callback) => {
-    // debugger
     dispatch(fetchSearchData(selectedOption));
     callback(search.optionsSearch.map(i => ({ label: i.LocalizedName, value: i.Key })))
   }
-  //console.log(current.details);
-  // handle input change event
-  // const handleInputChange = (value) => {
-  //   setCity(value);
-  // };
-
-  // useEffect(() => {
-  //   dispatch(fetchSearchData(city));
-  // }, [dispatch, city])
 
   useEffect(() => {
-    // debugger
-    console.log("in useEffect on lunch");
-    // if (isFirstRender.current) {
-    //   isFirstRender.current = false;
-    // } else {
     dispatch(fetchCurrentData(selectedOption.value))
     dispatch(fetchFiveData(selectedOption.value))
-    // }
   }, [dispatch, selectedOption])
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   setCity(event.target.city.value)
-  // }
 
   const handleAddFavorite = () => {
     dispatch(favoriteActions.addToFavorite({
       id: uuidv4(),
-      key: search.key,
-      city: search.cityName,
+      key: selectedOption.value,
+      city: selectedOption.label,
       temp: current.details.Temperature.Metric.Value,
       tempNight: five.five[0].Temperature.Minimum.Value,
       buttonText: 'Remove from favorite'
@@ -83,13 +57,46 @@ export default function Main() {
 
   const toggleBtnIfFavorite = () => {
     for (let i = 0; i < favorite.items.length; i++) {
-      if (favorite.items[i].city == search.cityName) {
+      if (favorite.items[i].city == selectedOption.label) {
         return (
           <p style={{ color: colorBtn, cursor: 'pointer' }}>{favorite.items[i].buttonText} <i className="far fa-heart"></i></p>
         )
       }
     }
     return <i className="far fa-heart"></i>
+  }
+
+  const colourStyles = {
+    menuList: styles => ({
+      ...styles,
+      background: 'white',
+      color: 'black',
+      borderRadius: "6px",
+    }),
+    loadOptions: (styles) => ({
+      ...styles,
+      zIndex: 1,
+      borderRadius: "6px",
+    }),
+    menu: base => ({
+      ...base,
+      zIndex: 100
+    }),
+    singleValue: styles => ({
+      ...styles,
+      color: '#fff'
+    }),
+    input: styles => ({
+      ...styles,
+      background: 'none',
+      color: '#fff'
+    }),
+    control: styles => ({
+      ...styles,
+      background: 'none',
+      padding: '0 0 0 30px',
+      color: '#fff',
+    })
   }
 
   return (
@@ -101,34 +108,27 @@ export default function Main() {
               <h1>Search your place and check the weather</h1>
               <p>Our forecast is updated 24/7, here you can be sure that you get an updated forecast.</p>
 
-              <div className="input_icons">
+              <div className="wrapper_input">
                 <i className="fas fa-search"></i>
-                {/* <form onSubmit={handleSubmit}>
-                  {/* <input type="text" placeholder="Search City" name="city" />
-                  <button type="submit" className="search" type="submit">Search</button> 
-                </form>*/}
-                <AsyncSelect
-                  autoFocus
-                  //defaultInputValue={'tel aviv'}
-                  value={selectedOption}
-                  onChange={debouncedOnChange}
+
+                <AsyncSelect className='react-select-container'
+                  onChange={updateSelector}
                   placeholder={'Search City'}
                   loadOptions={loadOptions}
+                  value={selectedOption}
+                  styles={colourStyles}
                 />
-                <button type="submit" className="search" type="submit">Search</button>
-
                 <ToastContainer position={'bottom-left'} autoClose={2000} />
               </div>
             </Col>
-            {/*Create separate component of the current day*/}
+
             <Col lg={6} md={6}>
               <div className="current" >
                 <h2>Today</h2>
                 <div className="wrap_today">
-                  {/*Using conditional ternary operator and not '&&'*/}
-                  {/* {current.details && (
+                  {current.details && (
                     <h3>{Math.ceil(Number(current.details.Temperature.Metric.Value))} °C</h3>
-                  )} */}
+                  )}
                   <p>{selectedOption.label}</p>
                 </div>
                 <div className="wrappe_btn_fav" onClick={handleAddFavorite}>

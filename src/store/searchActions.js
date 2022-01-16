@@ -1,14 +1,13 @@
 import { searchActions } from './searchSlice';
+import { toast } from "react-toastify";
 import config from '../config.json';
 import axios from 'axios';
 
-export const fetchSearchData = (input) => {
+export const fetchSearchData = (input, callback) => {
   return async (dispatch) => {
-    const fetch = async () => {
+    const fetchSearch = async () => {
       try {
-        // debugger
-        const url = (`https://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${config.APIKEY}&q=${input}`)
-        const response = axios.get(url);
+        const response = await axios.get(`https://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${config.APIKEY}&q=${input}`)
 
         return response;
       }
@@ -17,10 +16,11 @@ export const fetchSearchData = (input) => {
       }
     }
     try {
-      const searchDate = await fetch();
-      (dispatch(searchActions.searchWeather({ optionsSearch: searchDate.data, key: searchDate.data[0].Key })))
+      const searchDate = await fetchSearch();
+      (dispatch(searchActions.searchWeather({ optionsSearch: searchDate.data })))
     } catch (error) {
-      dispatch(searchActions.errorNotification({ searchDate: null }))
+      toast.error("Oops! city not found, try again please");
+      throw error;
     }
   }
 
